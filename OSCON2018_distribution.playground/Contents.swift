@@ -242,7 +242,7 @@ func printNiceMessage() {
 func makeShouting(from input: String) -> String { // notice this declaration contains two parameter labels
     
     // the second one is how this value is referred to internally to the function
-    let word = input.replacingOccurrences( of:"[^0-9]", with: "", options: .regularExpression)
+    let word = input.replacingOccurrences( of:"[^A-Za-z]", with: "", options: .regularExpression)
     let shout = word.uppercased()
     
     return shout + "!"
