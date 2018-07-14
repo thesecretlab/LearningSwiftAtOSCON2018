@@ -208,17 +208,29 @@ sum
 let unsafeVariable: String? = "Some unsafe value we're not sure will be valid at runtime."
 
 
-func someThrowingFunction() throws -> Int {
-    // some dangerous code here that could "throw" an error
-    return 0
+extension String: Error {} // make some new object that can BE an Error
+
+
+/// A function that can "throw" an error
+func threeHater(_ input: Int) throws {
+    
+    let error = "INPUT WAS A THREE! ARGH!"
+    
+    if input == 3 {
+        throw error
+    }
 }
 
 
 do {
-    try someThrowingFunction()
+    
+    try threeHater(2)
+    //try threeHater(3)
 } catch {
+    
     // throw an error or perform a recovery here
     // multiple "catch" clauses can be used to catch different error conditions where needed
+    print(error)
 }
 //: There are more specific keywords and structures that can be used when a single variable is uncertain or unsafe.
 /*:
@@ -325,7 +337,11 @@ triple(1)
 //: The idea being that Swift function calls should be read out loud to tell you what they do.
 //: This doesn't always work.
 func doAThing(withThis string: String, using int: Int) {
-    print("doing a thing with this \(string) and using \(int)")
+    
+    string
+    int
+    
+    //print("doing a thing with this \(string) and using \(int)")
 }
 
 
@@ -396,9 +412,13 @@ ways
 //: you can also iterate over multiple arrays at once using zip
 let a1 = [1,2,3,4,5]
 let a2 = ["a","b","c","d","e"]
-for (number, string) in zip(a1, a2)
-{
-    print("\(string) is in alphabet at position \(number)")
+
+
+for (number, string) in zip(a1, a2) {
+    number
+    string
+    
+    //print("\(string) is in alphabet at position \(number)")
 }
 //: Complicated things can also be done with single Strings as a collection of characters such a manipulating, appending or removing single or ranges of characters.
 var string = "Bool"
@@ -482,6 +502,7 @@ func shuffle(_ array: [String]) -> [String] {
 // now we can easily assess shuffling of our array with our shuffler
 let performance = assessShuffle(of: array, with: { array in return shuffle(array) })
 
+
 performance
 /*:
  # Structs, Classes and Enums
@@ -497,6 +518,7 @@ struct Talk {
 let aiTalk = Talk(name: "Machine overlord and you: Building AI on iOS with open source tools", accepted: true)
 let gameTalk = Talk(name: "Open Source Game Development with Godot", accepted: true)
 var swiftTalk = Talk(name: "Learning Swift with Playgrounds", accepted: false)
+
 
 swiftTalk.accepted = true
 //swiftTalk.name = "Plearning Lift with Swaygrounds" // ERROR: Cannot assign to property: 'name' is a 'let' constant
@@ -516,6 +538,8 @@ for talk in talks {
  But you can't make a heirarchy of structs. They have no concept of inheritance, so any change in structure or behaviour would require a new declaration of an un-associated type. For such purposes, we use classes.
 
  They can also be written either so that many of then can be made, or so that there is always only a single instance that is shared by all references to it. This is useful for making sure that you always have the right copy of something and that any changes are applied to only that.
+ 
+ If a *class*'s attributes are not given default values, you are required to declare an initialiser for the class. You may have noticed that our *structs* did not require initialiser declaration; a default member-wise initialiser is inferred and automatically available for use if you do not declare a custom one.
  */
 class Person {
     
@@ -525,6 +549,7 @@ class Person {
         self.name = name
     }
 }
+
 
 var people = [Person(named: "Paris"), Person(named: "Tim"), Person(named:"Mars")]
 //: Now we can make new classes that inherit, or even selectively override, behaviours and attributes of a class we or others have made. This is done by declaring a **superclass** that your class inherits from alongside its class name.
@@ -546,12 +571,13 @@ class Speaker: Person {
 
 
 people.removeAll()
+
 people = [
     Speaker(named: "Paris", presenting: talks),
     Speaker(named: "Tim", presenting: talks),
     Speaker(named: "Mars", presenting: [swiftTalk])
 ] // still okay because they're still all Person types
-//: Sometimes we want to add something to a class declared elsewhere. Good thing we have **extensions**. They cannot contain stored properties, but they can contain **computed** properties and additional functions. They're also a tidy way to separate visually the parts of a class that handle different aspects or behaviours, or to represent evolution during development.
+//: Sometimes we want to add something to a class or struct declared elsewhere. Good thing we have **extensions**. They cannot contain stored properties, but they can contain **computed** properties and additional functions. They're also a tidy way to separate visually the parts of a class that handle different aspects or behaviours, or to represent evolution during development.
 extension Speaker {
     
     var workload: Int {
@@ -568,15 +594,32 @@ extension Speaker {
         acceptedTalk?.accepted = true
     }
 }
-
-//: You can extend almost everything in Swift, including the base types
+//: You can extend almost everything in Swift, including the base types.
 extension Int {
     var doubled: Int
     {
         return self * 2
     }
 }
+
+
 6.doubled
+//: Another handly use of extensions is to retain freebies. Remember that we said a default member-wise initialiser is made for a struct **if you do not declare a custom one**. Actually, it is made as long as you do not declare a custom one **in the initial declaration block**. This means you can *extend* a struct to give it a custom initialiser while retaining the inferred (free) one.
+extension Talk {
+    
+    init(accepted: Bool) {
+        self.init(name: "Untitled Talk", accepted: accepted)
+    }
+    
+    init() {
+        self.init(accepted: false)
+    }
+}
+
+
+let blockchainTalk = Talk(name: "Block-by-Blockchain", accepted: false)
+let lightningTalk = Talk(accepted: true)
+let otherTalk = Talk()
 /*:
  Properties can also be given **observers**, that will perform some action when they are about to or were just changed. This can be useful when other variables and actions need to be kept notified of changes.
 
