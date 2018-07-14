@@ -24,7 +24,7 @@ import PlaygroundSupport
  
  We'll be doing everything in Playgrounds, the REPL (Read-Evaluate-Print Loop) environment built into Apple's Xcode.  It is similar to Jupyter, in that it is a live-executing environment that allows for quick demonstration and learning with Swift. It also supports Markdown (the beautiful rendering you see here, including links and images right alongside your code). We love them and think tools like this are **the future**. DISCLAIMER: Because it is not yet **the future**, environments like this can sometimes be a little unstable but it's totally worth it.
  
- Swift Playgrounds is also available as an iPad application, which in addition to the features of Xcode's Mac version also supports a book format of multiple Playgrounds pages--and even chapters--toegther in one tidy package, as well as things like hidden and shared code blocks between pages and simpler live view interactions. Much of this will seem more appealing once you get started with Swift and Playgrounds.
+ Swift Playgrounds is also available as an iPad application, which in addition to the features of Xcode's Mac version also supports a book format of multiple Playgrounds pages--and even chapters--together in one tidy package, as well as things like hidden and shared code blocks between pages and simpler live view interactions. Much of this will seem more appealing once you get started with Swift and Playgrounds.
  
  This environment has a whole suite of features that can make quick mock-ups a breeze, but most of what we will be using today is just the line-by-line results that can be found in the right sidebar. In many cases, such as where a single line was run multiple times, further details can be found by selecting the rectangular or eye icons beside the result to expand it or see more details.
  
@@ -60,10 +60,13 @@ var mysteryTypedVariable = [5, 4, 3, 2, 1.0]
 //: As well as the Playgrounds environment, Swift itself also supports full Unicode in its Strings. Yes, you can make emoji variable names. No, you should not make emoji variable names. But this support is great for not breaking other things and for robust localization.
 let 🦕 = "dinosaur"
 let dinosaur = "🦖"
-//: Many types support simple typecasting. For others, they may require a custom function to be written or some extra information. But usually it is a simple case of initialising the new type with the old value, like so:
+//: Swift is a **very** strongly typed language, and the compiler is very picky about ensuring type safety. Many types however support direct typecasting:
+let typeCastDouble = 1 as Double
+//: For others, they may require a custom function to be written or some extra information. But usually it is a simple case of initialising the new type with the old value, like so:
 let typecastDouble = Double(integerVariable)
 let typecastInteger = Int(typecastDouble)
-//: Collection types such as Arrays and Dictionaries are especially clean and intuitive in Swift. They can easily be declared and manipulated with literals that leave the memory management to the machine.
+
+//: Collection types such as Arrays and Dictionaries are especially clean and intuitive in Swift. They can easily be declared and manipulated with literals that leave the initialisation to the machine.
 var stringArray = ["First element", "Second element", "Third element"]
 stringArray += ["More Array elements", "Can be added en masse", "As either addition of two or more Arrays"]
 stringArray.append("Or as one element at a time")
@@ -71,10 +74,13 @@ stringArray.append("Or as one element at a time")
 stringArray.insert("Zero-th element", at: 0)
 stringArray.count
 stringArray.dropLast(4)
+//: You can also directly insert and address elements using subscripts:
+stringArray[0] = "New Zero-th element"
+let secondElement = stringArray[1]
 /*:
  # Operators
  
- It's a programming langauge: it has math and logic. You can do math with the math bits and logic with the logic bits and sometimes--*if you're feeling saucy*--logic with the math bits or math with the logic bits.
+ It's a programming langauge: it has maths and logic. You can do maths with the math bits and logic with the logic bits and sometimes--*if you're feeling saucy*--logic with the maths bits or maths with the logic bits.
  */
 //: Swift has some math operators you would expect...
 let addition        = 2 + 1 // two plus one
@@ -113,15 +119,15 @@ let notEqual        = 2 != 1 // boolean representing whether two is not equal to
 
 
 // or more restrictive
-class SomeObject:   NSObject {}     // some fake object class
+class SomeObject {}     // some fake object class
 let oneObject       = SomeObject()  // a default object of that class
 let anotherObject   = SomeObject()  // another default object of that class
 
 let same            = oneObject === anotherObject // boolean representing whether oneObject and anotherObject are THE SAME OBJECT, regardless of whether they have the same values
 /*:
- There are also a range of operators for bitwise calculation or manipulation and and compound operators that allow overflow handling in multiplication and division, but that is likely more math than you will need at this point. You can declare your own operators too, similarly to how you'd declare a function. More details can be found [here](https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html) and [here](https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html).
+ There are also a range of operators for bitwise calculation or manipulation and and compound operators that allow overflow handling in multiplication and division, but that is likely more maths than you will need at this point. You can declare your own operators too, similarly to how you'd declare a function. More details can be found [here](https://docs.swift.org/swift-book/LanguageGuide/BasicOperators.html) and [here](https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html).
  
- As you saw above with some String manipulation, there is also the "dot" operator. This accesses attributes and functionalities that the preceding variable or type has. For example...
+ As you saw above with some String manipulation, there is also the "dot" operator. This accesses properties and functions that the preceding variable or type has. For example...
  */
 stringArray.count       // every Array type has an inbuilt value called "count" that will return an Int representing the number of elements it contains
 stringArray.removeAll() // Arrays also have the ability to clear all their elements at once
@@ -158,7 +164,7 @@ greatest = thing > otherThing ? thing : otherThing
 //  reads as greatest equals (if thing > otherthing then thing else otherThing)
 //: This is also useful for doing different actions based on a boolean check
 let todayString = String(describing: Date()) // the datetime right now as a String
-//todayString.hasPrefix("2018-07-19 16:00") ? print("It's TALK TIME!") : print("False Alarm")
+//todayString.hasPrefix("2018-07-19 16") ? print("It's TALK TIME!") : print("False Alarm")
 //: You can run a block multiple times until a desired point is reached using a "while" loop.
 let answer = 10
 var guess = -1
@@ -214,7 +220,57 @@ do {
     // throw an error or perform a recovery here
     // multiple "catch" clauses can be used to catch different error conditions where needed
 }
-//: There are more specific keywords and structures that can be used when a single variable is uncertain or unsafe. We will dicuss these a little later in the segment on Optionals.
+//: There are more specific keywords and structures that can be used when a single variable is uncertain or unsafe.
+/*:
+# Optionals
+
+Swift basic types are non-nullable: if they have ever been initialised they can never NOT have a value of their declared of inferred type. Clean types are all well and good, and these restrictions are some of what makes Swift such a safe language, but in the real world we often pass around objects or values we didn't create or have complete control over.
+
+Enter the Optional type.
+*/
+var normalInteger: Int = 1
+//normalInteger = nil // ERROR: Nil cannot be assigned to type 'Int'
+
+var optionalInteger: Int? = 1
+optionalInteger = nil
+/*:
+ However, while this makes the value nullable, it does not allow us the same operations as the original non-Optional type does. To do many things, we must do more than just assume there will be a value to operate on (because the compiler just doesn't trust you any more, you've been wrong before). So we have to perform an "unwrapping" to extract the value as its underlying type. To do so, there are a few options:
+ - Using an exclamation mark on an optional Type. Basically saying to the compiler "there will be a number, trust me". **This will crash if you are wrong. Don't do this; you are not too cool for memory safety!**
+ - A let-var structure. Basically "if this assignment to a non-Optional type resolves without crashing, do the thing within the block".
+ - A guard-let structure. Basically the opposite, "if this assignment to a non-Optional type causes a crash, do the thing within the block".
+ */
+optionalInteger = 10
+
+
+func addPi(to optionalInteger: Int?) -> Double {
+    
+    let π = Double.pi
+    var double: Double = 0
+    
+    // OPTION 1:
+    //let integer = optionalInteger! // BADBADBAD
+    
+    
+    // OPTION 2:
+    if let integer = optionalInteger { // integer is now a normal Int type
+        double = Double(integer) // you can use it as such
+    }
+    
+    
+    // OPTION 3:
+    guard let integer = optionalInteger else { // declare the thing you expect will succeed
+        return π // exits the current scope to avoid the crash if it didn't go the way you expected
+    }
+    
+    double = Double(integer)
+    
+    return double + π
+}
+
+
+addPi(to: optionalInteger)
+//: There is also a **nil-coalescing** operator that allows a fallback value if the original is nil. This is shown as two question marks.
+let integer = optionalInteger ?? 0 // if the first thing turns out to be nil, be the second instead
 /*:
  # Functions
  
@@ -226,8 +282,7 @@ func printNiceMessage() {
     
     print("Today is a beautiful day.")
 }
- 
-//printNiceMessage()
+
 //printNiceMessage()
 //: When we bring in the concept of input parameters, Swift also offers a nice syntax for declarative comments that can be found by others in the option-click quickhelp.
 /**
@@ -242,7 +297,7 @@ func printNiceMessage() {
 func makeShouting(from input: String) -> String { // notice this declaration contains two parameter labels
     
     // the second one is how this value is referred to internally to the function
-    let word = input.replacingOccurrences( of:"[^A-Za-z]", with: "", options: .regularExpression)
+    let word = input.replacingOccurrences( of:"[^A-Za-z ]", with: "", options: .regularExpression)
     let shout = word.uppercased()
     
     return shout + "!"
@@ -266,6 +321,17 @@ func triple(_ integer: Int) -> Int {
 
 double(integer: 1)
 triple(1)
+//: The order of the parameters is important, they must match the order they are declared in the function definition.
+//: The idea being that Swift function calls should be read out loud to tell you what they do.
+//: This doesn't always work.
+func doAThing(withThis string: String, using int: Int) {
+    print("doing a thing with this \(string) and using \(int)")
+}
+
+
+doAThing(withThis: "string", using: 5)
+//: The above works, but this won't
+//doAThing(using: 5, withThis: "string") // ERROR: Argument 'withThis' must precede argument 'using'
 //: Function **overloading** allows a single function name to be called that will refer to different functions behind the scenes.
 func reverse(_ string: String) -> String {
     
@@ -304,6 +370,7 @@ dateDescription(futureDate)  // "date" within the function will use futureDate
 dateDescription()            // "date" within the function will use Date() (the datetime when the code is run)
 //: Many Swift Collection types also have a number of "higher-order functions" that can be applied to them for powerful manipulation with fast results. These take a function or block to execute in conjunction with the operation you called.
 // you can fetch all elements that match a certain criteria
+stringArray = ["First element", "Second element", "Third element", "last element in the array"]
 let elementsArray = stringArray.filter { $0.hasSuffix("element") }
 elementsArray.description
 
@@ -326,6 +393,13 @@ for adjective in adjectivesArray {
 }
 
 ways
+//: you can also iterate over multiple arrays at once using zip
+let a1 = [1,2,3,4,5]
+let a2 = ["a","b","c","d","e"]
+for (number, string) in zip(a1, a2)
+{
+    print("\(string) is in alphabet at position \(number)")
+}
 //: Complicated things can also be done with single Strings as a collection of characters such a manipulating, appending or removing single or ranges of characters.
 var string = "Bool"
 string.remove(at: string.startIndex) // removes "B" from start
@@ -340,11 +414,11 @@ let wordsArray = longString.components(separatedBy: " ")
 wordsArray.count
 
 
-// note that Javascript-style method chaining does work in Swift also
+// method chaining does work in Swift also
 let longerWordsArray = longString.components(separatedBy: " ").filter { $0.count > 4 }.map { $0.localizedCapitalized }
 longerWordsArray.count
 /*:
- While these are simple demonstrations of how passing conditions or functions to another function can be useful, the true power of closures becomes clear in cases such as where a certain chain of events must defy otherwise asynchronous execution, or where execution of a block will depend on an object it can have no knowledge of.
+ While these are simple demonstrations of how passing conditions or functions to another function can be useful, the true power of closures becomes clear in cases such as where the certain chain of events must defy otherwise asynchronous execution, or where execution of a block will depend on an object it can have no knowledge of.
  
  You can pass a function or block like any parameter to another function or object, to be executed conditionally or upon its completion.
 */
@@ -410,66 +484,16 @@ let performance = assessShuffle(of: array, with: { array in return shuffle(array
 
 performance
 /*:
- # Optionals
- 
- Swift basic types are non-nullable: if they have ever been initialised they can never NOT have a value of their declared of inferred type. Clean types are all well and good, and these restrictions are some of what makes Swift such a safe language, but in the real world we often pass around objects or values we didn't create or have complete control over.
- 
- Enter the Optional type.
- */
-var normalInteger: Int = 1
-//normalInteger = nil // ERROR: Nil cannot be assigned to type 'Int'
-
-var optionalInteger: Int? = 1
-optionalInteger = nil
-/*:
- However, while this makes the value nullable, it does not allow us the same operations as the original non-Optional type does. To do many things, we must do more than just assume there will be a value to operate on (because the compiler just doesn't trust you any more, you've been wrong before). So we have to perform an "unwrapping" to extract the value as its underlying type. To do so, there are a few options:
- - Using an exclamation mark on an optional Type. Basically saying to the compiler "there will be a number, trust me". **This will crash if you are wrong. Don't do this; you are not too cool for memory safety!**
- - A let-var structure. Basically "if this assignment to a non-Optional type resolves without crashing, do the thing within the block".
- - A guard-let structure. Basically the opposite, "if this assignment to a non-Optional type causes a crash, do the thing within the block".
- */
-optionalInteger = 10
-
-
-func addPi(to optionalInteger: Int?) -> Double {
-    
-    let pi = Double.pi
-    var double: Double = 0
-    
-    // OPTION 1:
-    //let integer = optionalInteger! // BADBADBAD
-    
-    
-    // OPTION 2:
-    if let integer = optionalInteger { // integer is now a normal Int type
-        double = Double(integer) // you can use it as such
-    }
-    
-    
-    // OPTION 3:
-    guard let integer = optionalInteger else { // declare the thing you expect will succeed
-        return pi // exits the current scope to avoid the crash if it didn't go the way you expected
-    }
-    
-    double = Double(integer)
-    
-    return double + pi
-}
-
-
-addPi(to: optionalInteger)
-//: There is also a **nil-coalescing** operator that allows a fallback value if the original is nil. This is shown as two question marks.
-let integer = optionalInteger ?? 0 // if the first thing turns out to be nil, be the second instead
-/*:
  # Structs, Classes and Enums
  
- To model things intelligently, it often makes sense for a group of values to be associated in some way. Because of this, it is common to see Object-Oriented practices where an object is created that possesses inherent attributes and behaviours that may or may not be able to be changed.
+ To model things intelligently, it often makes sense for a group of values to be associated in some way. Because of this, Swift has a few different ways to create custom types that possesses properties and behaviours that may or may not be able to be changed.
  */
 struct Talk {
     
     let name: String
     var accepted: Bool
 }
-//: They can then be used like any other value, using the dot operator to access its contents.
+//: They can then be used like any other value, using the dot operator to access its properties and functions.
 let aiTalk = Talk(name: "Machine overlord and you: Building AI on iOS with open source tools", accepted: true)
 let gameTalk = Talk(name: "Open Source Game Development with Godot", accepted: true)
 var swiftTalk = Talk(name: "Learning Swift with Playgrounds", accepted: false)
@@ -489,7 +513,7 @@ for talk in talks {
     }
 }
 /*:
- But you can't make a heirarchy of structs. They have no concept of inheritance, so any small change in structure or behaviour would require a new declaration of an un-associated type. For such purposes, we use classes.
+ But you can't make a heirarchy of structs. They have no concept of inheritance, so any change in structure or behaviour would require a new declaration of an un-associated type. For such purposes, we use classes.
 
  They can also be written either so that many of then can be made, or so that there is always only a single instance that is shared by all references to it. This is useful for making sure that you always have the right copy of something and that any changes are applied to only that.
  */
@@ -527,7 +551,7 @@ people = [
     Speaker(named: "Tim", presenting: talks),
     Speaker(named: "Mars", presenting: [swiftTalk])
 ] // still okay because they're still all Person types
-//: Sometimes we want to add something to a class declared elsewhere. Good thing we have **extensions**. They cannot contained stored properties, but they can contain **computed** properties and additional functions. They're also a tidy way to separate visually the parts of a class that handle different aspects or behaviours, or to represent evolution during development.
+//: Sometimes we want to add something to a class declared elsewhere. Good thing we have **extensions**. They cannot contain stored properties, but they can contain **computed** properties and additional functions. They're also a tidy way to separate visually the parts of a class that handle different aspects or behaviours, or to represent evolution during development.
 extension Speaker {
     
     var workload: Int {
@@ -544,10 +568,19 @@ extension Speaker {
         acceptedTalk?.accepted = true
     }
 }
-/*:
- Properties can also be given **observers**, that will perform some action when they are about to or were just changed. This can be useful when things need to be notified across objects, and allows better separation of code.
 
-Note that this does not alert for initialisation, only the first change afterwards.
+//: You can extend almost everything in Swift, including the base types
+extension Int {
+    var doubled: Int
+    {
+        return self * 2
+    }
+}
+6.doubled
+/*:
+ Properties can also be given **observers**, that will perform some action when they are about to or were just changed. This can be useful when other variables and actions need to be kept notified of changes.
+
+Note that property observers don't fire for initialisation, only the first change afterwards.
 */
 // making some type that handles some state
 enum Status: String {
@@ -618,7 +651,7 @@ class ClassType { // we make a reference-typed thing
 
 var classVariable = ClassType() // we instantiate a thing
 
-let classDuplicate = classVariable // we duplicate the thing
+let classDuplicate = classVariable // we "duplicate" the thing
 
 classVariable.foo = 5 // we change its value
 
@@ -692,7 +725,7 @@ day.type
 day.nextDay()
 day.increment(days: 4)
 /*:
- Enums can also be given associated values, allowing different cases to each store different values. This means they will have to be instantiated with a parameter and these types cannot have stores rawValues. Here is an example of how decisions can then be made not only on the different cases but also their sub-values.
+ Enums can also be given associated values, allowing different cases to each store different values. This means they will have to be instantiated with a parameter and these types cannot have rawValues. Here is an example of how decisions can then be made not only on the different cases but also their associated values.
  */
 enum Vehicle {
     
@@ -717,7 +750,7 @@ enum Vehicle {
 let vehicle1: Vehicle = .car(registration: nil)
 vehicle1.allowedOnRoad
 
-let vehicle2: Vehicle = .car(registration: "MADMAX")
+let vehicle2: Vehicle = .car(registration: "PLAT3NUMB3R")
 vehicle2.allowedOnRoad
 /*:
  # Protocols
@@ -796,6 +829,17 @@ extension Array where Element: Describable {
 }
 
 people.describe()
+
+
+extension Int: Describable
+{
+    func describe() -> String {
+        return "\(self)"
+    }
+}
+
+
+[1,4,5,2,7].describe()
 //: A little tidbit is a nice way to clean up Playgrounds: the CustomDebugStringConvertible protocol, adhering to which will require your class to have a debugDescription variable, but which will let you customise the description that appears for it in the line results =>
 extension Speaker: CustomDebugStringConvertible {
     
@@ -918,7 +962,7 @@ if let path = Bundle.main.path(forResource: "file", ofType: "txt") {
     }
 }
 /*:
- Debugging techniques are very limited in Playgrounds. While Xcode has a full suite of tools and functionalities to debug applications at scale, Playgrounds pretty much just has the basics:
+ Debugging techniques are very limited in Playgrounds. While Xcode has a full suite of tools to debug applications, Playgrounds pretty much just has the basics:
  
  * value tracing
  * print statements
