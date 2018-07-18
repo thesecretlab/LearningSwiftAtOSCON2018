@@ -21,4 +21,4 @@ On top of a quick into to the Swift language and the benefits of learning and pl
  * O'Reilly's [Learning Swift 3rd Edition](http://shop.oreilly.com/product/0636920083566.do) by the presenters
 
 ## Use
-This content was written by the authors named above, release for use under the [MIT License](https://opensource.org/licenses/MIT).
+The Playgrounds content was written by the authors named above, release for use under the [MIT License](https://opensource.org/licenses/MIT). The theme file included is an Xcode adaptation of [Solarized](http://ethanschoonover.com/solarized) by Ethan Schoonover.
