@@ -12,7 +12,9 @@ On top of a quick into to the Swift language and the benefits of learning and pl
 * Functions
 * Structs, Classes and Enums
 * Protocols
-* I/O and Debugging
+* I/O
+* Debugging
+
 ... while discussing the language and environments' strengths, weaknesses and conventions throughout.
 
 ## Related Links
