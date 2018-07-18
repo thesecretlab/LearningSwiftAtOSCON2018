@@ -1001,6 +1001,7 @@ if let path = Bundle.main.path(forResource: "file", ofType: "txt") {
         
         //deleteFile(sandboxFile)
     } catch {
+        
         print("ERROR: Unable to create file! \(error)")
     }
 }

@@ -18,7 +18,7 @@ On top of a quick into to the Swift language and the benefits of learning and pl
 ## Related Links
  * [Swift.org's Language Documentation](https://docs.swift.org)
 
- * [Learning Swift 3rd Edition](http://shop.oreilly.com/product/0636920083566.do)
+ * O'Reilly's [Learning Swift 3rd Edition](http://shop.oreilly.com/product/0636920083566.do) by the presenters
 
 ## Use
 This content was written by the authors named above, release for use under the [MIT License](https://opensource.org/licenses/MIT).

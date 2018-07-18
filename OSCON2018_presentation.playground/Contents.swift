@@ -1,4 +1,3 @@
-import Foundation // import statements must be at the top
 /*:
  # Learning Swift with Playgrounds
  
