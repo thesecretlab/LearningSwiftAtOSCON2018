@@ -8,8 +8,8 @@ On top of a quick into to the Swift language and the benefits of learning and pl
 * Types
 * Operators
 * Flow Control
-* Functions
 * Optionals
+* Functions
 * Structs, Classes and Enums
 * Protocols
 * I/O and Debugging
