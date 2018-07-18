@@ -1,7 +1,7 @@
 # Learning Swift with Playgrounds
 *Presented by [Paris Buttfield-Addison](https://github.com/parisba), [Tim Nugent](https://github.com/McJones) and [Mars Geldard](https://github.com/TheMartianLife) at OSCON 2018*
 
-**Include a link to the talk once available here.**
+Includes two Playgrounds: the **distribution** version, which was pre-made and contains a broader overview of all the content we would have liked to fit in to the talk or extensions thereof, and the **presentation** version, which is an annotated version of that made on stage. **Include a link to the talk once available here.**
 
 ## Topics
 On top of a quick into to the Swift language and the benefits of learning and playing with Playgrounds overall, this talk's content covers:
