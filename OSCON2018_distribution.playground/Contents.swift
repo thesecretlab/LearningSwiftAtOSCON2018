@@ -42,7 +42,7 @@ var integerVariable: Int = 1
 integerVariable = 2 // perfectly fine to do
 
 let integerConstant: Int = 1
-//integerConstant = 2 // ERROR: Cannot assign to value: 'valueTwo' is a 'let' constant
+//integerConstant = 2 // ERROR: Cannot assign to value: 'integerConstant' is a 'let' constant
 //: Declarations can also be explicitly or implicitly typed--this is sometimes called Static Typing versus Type Inference. Where not declared, Swift will default to whichever basic type it thinks is most likely based on what value you initially give it, if it is able. Because of this, a declaration that is not being assigned a value in the same line cannot be implicitly-typed.
 let explicitInteger: Int = 1
 type(of: explicitInteger) // Integer Type
