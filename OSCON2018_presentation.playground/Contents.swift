@@ -1,14 +1,44 @@
+/**
+ # Learning Swift with Playgrounds
+ 
+    CODE        =>  github.com / thesecretlab / LearningSwiftAtOSCON2018
+ 
+    PRESENTERS  =>  twitter.com / parisba || The_McJones || TheMartianLife
+ */
 
-/// CODE => github.com / thesecretlab / LearningSwiftAtOSCON2018
+import Foundation
 
-var integerVariable: Int = 1
-integerVariable = 2
+/// Returns random integer between 0 and parameter
+func randomNumber(upTo number: Int) -> Int {
+    return Int(arc4random_uniform(UInt32(number + 1)))
+}
 
-let integerConst: Int = 1
-//integerConst = 2
 
-var stringTest = "This is a String literal"
-stringTest.append("!")
-stringTest += "!!"
+
+
+
+//: ## Types
+
+
+//: ## Operators
+
+
+//: ## Flow Control
+
+
+//: ## Optionals
+
+
+//: ## Functions
+
+ 
+//: ## Structs, Classes and Enums
+
+ 
+//: ## Protocols
+
+ 
+//: ## I/O
+
 
 

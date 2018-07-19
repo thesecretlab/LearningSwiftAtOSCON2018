@@ -1,4 +1,4 @@
-// import statements must be at the top
+// import statements should be at the top
 import Foundation
 import PlaygroundSupport
 /*:
