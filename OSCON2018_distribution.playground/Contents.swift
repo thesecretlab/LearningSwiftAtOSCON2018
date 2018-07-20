@@ -577,7 +577,7 @@ people = [
     Speaker(named: "Tim", presenting: talks),
     Speaker(named: "Mars", presenting: [swiftTalk])
 ] // still okay because they're still all Person types
-//: Sometimes we want to add something to a class or struct declared elsewhere. Good thing we have **extensions**. They cannot contain stored properties, but they can contain **computed** properties and additional functions. They're also a tidy way to separate visually the parts of a class that handle different aspects or behaviours, or to represent evolution during development.
+//: Sometimes we want to add something to a class or struct declared elsewhere. Good thing we have **extensions**. They cannot contain stored properties, but they can contain **computed** properties and additional functions, even define class-specific operators. They're also a tidy way to separate visually the parts of a class that handle different aspects or behaviours, or to represent evolution during development.
 extension Speaker {
     
     var workload: Int {
@@ -592,6 +592,11 @@ extension Speaker {
         
         // accept it
         acceptedTalk?.accepted = true
+    }
+    
+    
+    static func ==(lhs: Speaker, rhs: Speaker) -> Bool {
+        return lhs.name == rhs.name
     }
 }
 //: You can extend almost everything in Swift, including the base types.
